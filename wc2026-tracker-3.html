@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIFA Jahon Chempionati 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #070a0f;
+  --surface: #0d1117;
+  --card: #131a24;
+  --card2: #1a2332;
+  --border: #1e2d40;
+  --gold: #f5b800;
+  --gold2: #ffd84d;
+  --green: #00e676;
+  --red: #ff4444;
+  --blue: #1e90ff;
+  --text: #e8edf3;
+  --muted: #6b7f96;
+  --accent: #00c2ff;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HERO HEADER ── */
+.hero {
+  position: relative;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 28px;
+}
+
+/* Stadium SVG background */
+.hero-stadium {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Dark overlay */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(7,10,15,0.3) 0%,
+    rgba(7,10,15,0.55) 40%,
+    rgba(7,10,15,0.92) 80%,
+    rgba(7,10,15,1) 100%
+  );
+  z-index: 1;
+}
+
+/* Trophy on top */
+.hero-trophy-wrap {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  filter: drop-shadow(0 0 30px #f5b800cc);
+  animation: floatTrophy 4s ease-in-out infinite;
+}
+@keyframes floatTrophy {
+  0%,100%{ transform: translateX(-50%) translateY(0px); filter: drop-shadow(0 0 25px #f5b800bb); }
+  50%{ transform: translateX(-50%) translateY(-8px); filter: drop-shadow(0 0 45px #f5b800ff); }
+}
+
+/* Players row */
+.hero-players {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 2;
+  pointer-events: none;
+  padding: 0 10px;
+}
+.hero-player {
+  font-size: clamp(70px, 14vw, 140px);
+  line-height: 1;
+  filter: drop-shadow(0 4px 20px rgba(0,0,0,0.9));
+  opacity: 0.92;
+}
+.hero-player.left { transform: scaleX(-1); }
+
+/* Text content */
+.hero-content {
+  position: relative;
+  z-index: 3;
+  padding: 0 16px;
+}
+
+@keyframes glow { 0%,100%{filter:drop-shadow(0 0 15px #f5b800aa)} 50%{filter:drop-shadow(0 0 35px #f5b80088)} }
+.hero h1 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(30px, 6vw, 60px);
+  letter-spacing: 4px;
+  background: linear-gradient(135deg, #f5b800, #fff 50%, #f5b800);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  text-shadow: none;
+}
+.hero-sub { font-family: 'Barlow Condensed', sans-serif; color: var(--muted); letter-spacing: 6px; text-transform: uppercase; font-size: 12px; margin-top: 5px; }
+.hero-flags { font-size: 20px; margin-top: 6px; opacity: 0.85; }
+
+/* ── LIVE BADGE ── */
+.live-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #ff1a1a22; border: 1px solid #ff1a1a44;
+  color: #ff4444; border-radius: 20px;
+  padding: 4px 12px; font-size: 11px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; margin-top: 10px;
+}
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: #ff4444; animation: blink 1.2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* ── NAV TABS ── */
+.nav-tabs {
+  display: flex; overflow-x: auto; gap: 4px;
+  padding: 16px 16px 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  position: sticky; top: 0; z-index: 100;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+  flex-shrink: 0;
+  background: none; border: none; color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 10px 18px;
+  border-bottom: 2px solid transparent; cursor: pointer;
+  transition: all 0.2s;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ── MAIN LAYOUT ── */
+.main { max-width: 1400px; margin: 0 auto; padding: 20px 16px 60px; }
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── SECTION TITLE ── */
+.section-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 28px; letter-spacing: 3px;
+  color: var(--gold); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+
+/* ── GROUPS GRID ── */
+.groups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+.group-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.group-card:hover { border-color: #2a3a50; }
+.group-header {
+  background: linear-gradient(135deg, #0d1f35, #152840);
+  padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.group-name { font-family: 'Bebas Neue', cursive; font-size: 20px; letter-spacing: 2px; color: var(--gold); }
+.group-table { width: 100%; border-collapse: collapse; }
+.group-table th {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); padding: 6px 8px; text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.group-table th:first-child { text-align: left; padding-left: 12px; }
+.group-table td { padding: 8px; text-align: center; font-size: 13px; border-bottom: 1px solid #0d1520; }
+.group-table td:first-child { text-align: left; padding-left: 12px; }
+.group-table tr:last-child td { border-bottom: none; }
+.group-table tr { transition: background 0.15s; }
+.group-table tr:hover { background: #1a2535; }
+.team-cell { display: flex; align-items: center; gap: 8px; }
+.team-flag { font-size: 18px; }
+.team-name-short { font-weight: 600; font-size: 13px; }
+.pts { font-weight: 700; color: var(--gold); }
+.qualify-1 { border-left: 3px solid var(--green); }
+.qualify-2 { border-left: 3px solid #1e90ff; }
+.qualify-3 { border-left: 3px solid #888; }
+
+/* ── MATCHES ── */
+.matches-section { margin-top: 16px; padding: 12px; border-top: 1px solid var(--border); }
+.matches-title { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+.match-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 4px; border-bottom: 1px solid #0d1520; gap: 6px;
+}
+.match-row:last-child { border-bottom: none; }
+.match-team { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; flex: 1; }
+.match-team.right { justify-content: flex-end; }
+.match-score {
+  font-family: 'Bebas Neue', cursive; font-size: 20px;
+  letter-spacing: 3px; color: var(--text); min-width: 52px;
+  text-align: center; background: var(--bg);
+  border-radius: 6px; padding: 2px 6px;
+}
+.match-score.played { color: var(--gold); }
+.match-score.upcoming { color: var(--muted); font-size: 14px; letter-spacing: 1px; }
+
+/* ── BRACKET ── */
+.bracket-container { overflow-x: auto; padding-bottom: 20px; }
+.bracket { display: flex; gap: 0; min-width: 900px; }
+.round-col { flex: 1; display: flex; flex-direction: column; }
+.round-header {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); text-align: center; padding: 10px 4px;
+  border-bottom: 1px solid var(--border); margin-bottom: 8px;
+}
+.bracket-slot {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 4px 8px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+  position: relative;
+}
+.bracket-slot:hover { border-color: #2a3a50; }
+.bracket-team {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: 12px;
+}
+.bracket-team:last-child { border-bottom: none; }
+.bracket-team.winner { background: #0d2010; color: var(--green); }
+.bracket-team .bteam-left { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.bracket-team .bscore { font-family: 'Bebas Neue', cursive; font-size: 17px; color: var(--gold); }
+.bracket-date { font-size: 10px; color: var(--muted); text-align: center; padding: 4px; background: #0a1015; }
+
+/* ── SCORERS TABLE ── */
+.scorers-table { width: 100%; border-collapse: collapse; }
+.scorers-table th {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); padding: 10px 12px; text-align: left;
+  border-bottom: 1px solid var(--border); background: var(--card);
+}
+.scorers-table td { padding: 10px 12px; border-bottom: 1px solid #0d1520; font-size: 13px; }
+.scorers-table tr:hover td { background: #131c28; }
+.rank-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; border-radius: 50%;
+  font-weight: 700; font-size: 12px; font-family: 'Barlow Condensed', sans-serif;
+}
+.rank-1 { background: #f5b800; color: #000; }
+.rank-2 { background: #a8b5c2; color: #000; }
+.rank-3 { background: #cd7f32; color: #fff; }
+.rank-other { background: var(--card2); color: var(--muted); }
+.goals-bar-wrap { display: flex; align-items: center; gap: 8px; }
+.goals-bar { height: 6px; background: var(--gold); border-radius: 3px; transition: width 0.5s; }
+.goals-num { font-family: 'Bebas Neue'; font-size: 18px; color: var(--gold); min-width: 20px; }
+
+/* ── TIPING ── */
+.tip-match-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+.tip-match-card:hover { border-color: #2a3a50; }
+.tip-match-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.tip-match-date { font-size: 11px; color: var(--muted); }
+.tip-teams { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 12px; }
+.tip-team-name { font-family: 'Barlow Condensed'; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.tip-vs { font-family: 'Bebas Neue'; font-size: 22px; color: var(--muted); }
+.tip-inputs { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.tip-score-input {
+  width: 52px; height: 44px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  font-family: 'Bebas Neue'; font-size: 26px;
+  text-align: center; outline: none; transition: border-color 0.2s;
+}
+.tip-score-input:focus { border-color: var(--gold); }
+.tip-sep { font-family: 'Bebas Neue'; font-size: 26px; color: var(--muted); }
+.tip-save-btn {
+  background: linear-gradient(135deg, #f5b800, #ffa500);
+  border: none; border-radius: 8px;
+  color: #000; font-family: 'Barlow Condensed'; font-weight: 700;
+  font-size: 13px; letter-spacing: 1px; padding: 8px 20px;
+  cursor: pointer; transition: all 0.2s; text-transform: uppercase;
+  margin-top: 8px; width: 100%;
+}
+.tip-save-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 15px #f5b80044; }
+.tip-saved { background: #00e67622; border: 1px solid #00e67633; color: var(--green); border-radius: 8px; padding: 6px 12px; font-size: 12px; text-align: center; margin-top: 6px; }
+
+/* ── LEADERBOARD ── */
+.leaderboard-list { display: flex; flex-direction: column; gap: 8px; }
+.lb-row {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 16px;
+  transition: border-color 0.2s;
+}
+.lb-row:hover { border-color: #2a3a50; }
+.lb-rank { font-family: 'Bebas Neue'; font-size: 22px; color: var(--muted); min-width: 32px; }
+.lb-name { flex: 1; font-weight: 600; font-size: 15px; }
+.lb-pts { font-family: 'Bebas Neue'; font-size: 22px; color: var(--gold); }
+.lb-pts-label { font-size: 11px; color: var(--muted); }
+.lb-top1 { border-color: #f5b80066; background: #1a1500; }
+.lb-top2 { border-color: #a8b5c244; }
+.lb-top3 { border-color: #cd7f3244; }
+
+/* ── ADMIN PANEL ── */
+.admin-login {
+  max-width: 380px; margin: 60px auto;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 32px;
+}
+.admin-login h2 { font-family: 'Bebas Neue'; font-size: 28px; letter-spacing: 2px; margin-bottom: 24px; color: var(--gold); }
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; font-family: 'Barlow Condensed'; }
+.form-input {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); font-size: 14px;
+  padding: 10px 14px; outline: none; transition: border-color 0.2s;
+}
+.form-input:focus { border-color: var(--gold); }
+.form-select {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); font-size: 13px;
+  padding: 9px 14px; outline: none;
+}
+.btn-primary {
+  width: 100%; background: linear-gradient(135deg, #f5b800, #e5a500);
+  border: none; border-radius: 8px; color: #000;
+  font-family: 'Barlow Condensed'; font-weight: 700; font-size: 15px;
+  letter-spacing: 1.5px; padding: 12px; cursor: pointer;
+  text-transform: uppercase; transition: all 0.2s; margin-top: 4px;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 20px #f5b80033; }
+.btn-danger {
+  background: #ff444422; border: 1px solid #ff444444;
+  color: var(--red); border-radius: 6px; padding: 6px 14px;
+  font-size: 12px; cursor: pointer; font-family: 'Barlow Condensed';
+  font-weight: 700; letter-spacing: 1px; text-transform: uppercase; transition: all 0.2s;
+}
+.btn-danger:hover { background: #ff444433; }
+.admin-panel { display: none; }
+.admin-panel.visible { display: block; }
+.admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.admin-tab-btn {
+  background: var(--card2); border: 1px solid var(--border);
+  color: var(--muted); border-radius: 8px; padding: 8px 16px;
+  font-family: 'Barlow Condensed'; font-weight: 700; font-size: 13px;
+  letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+}
+.admin-tab-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+.admin-content { display: none; }
+.admin-content.active { display: block; }
+.match-edit-card {
+  background: var(--card2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px; margin-bottom: 10px;
+}
+.match-edit-title { font-family: 'Barlow Condensed'; font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+.score-inputs { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.score-input {
+  width: 56px; height: 44px; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); font-family: 'Bebas Neue'; font-size: 26px;
+  text-align: center; outline: none;
+}
+.score-input:focus { border-color: var(--gold); }
+.score-sep { font-family: 'Bebas Neue'; font-size: 24px; color: var(--muted); }
+.save-match-btn {
+  background: var(--green); border: none; border-radius: 6px;
+  color: #000; font-family: 'Barlow Condensed'; font-weight: 700;
+  font-size: 13px; letter-spacing: 1px; padding: 8px 16px;
+  cursor: pointer; text-transform: uppercase; transition: background 0.2s;
+}
+.save-match-btn:hover { background: #00ff8a; }
+.scorer-add-form { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; margin-top: 16px; }
+.scorer-add-form .form-input { flex: 1; min-width: 140px; }
+.scorer-add-form .form-select { flex: 1; min-width: 120px; }
+.tag { display: inline-flex; align-items: center; gap: 4px; background: var(--card2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 12px; }
+
+/* ── ALERTS ── */
+.alert { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; }
+.alert-success { background: #00e67618; border: 1px solid #00e67630; color: var(--green); }
+.alert-error { background: #ff444418; border: 1px solid #ff444430; color: var(--red); }
+
+/* ── STATS MINI ── */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-mini {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.stat-mini-num { font-family: 'Bebas Neue'; font-size: 32px; color: var(--gold); line-height: 1; }
+.stat-mini-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 1000;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 18px;
+  font-size: 13px; display: none;
+  animation: slideup 0.3s ease;
+  max-width: 280px;
+}
+.toast.show { display: block; }
+@keyframes slideup { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+/* ── USERNAME INPUT ── */
+.username-modal {
+  position: fixed; inset: 0; background: #000a; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.username-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 32px; width: 90%; max-width: 360px;
+  text-align: center;
+}
+.username-box h2 { font-family: 'Bebas Neue'; font-size: 26px; color: var(--gold); margin-bottom: 8px; }
+.username-box p { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+.username-box .form-input { margin-bottom: 12px; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px) {
+  .groups-grid { grid-template-columns: 1fr; }
+  .bracket { min-width: 700px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- USERNAME MODAL -->
+<div class="username-modal" id="usernameModal">
+  <div class="username-box">
+    <div style="font-size:40px">⚽</div>
+    <h2>FIFA 2026 TRACKER</h2>
+    <p>Prognoz tizimiga kirish uchun ismingizni kiriting</p>
+    <input class="form-input" id="usernameInput" type="text" placeholder="Ismingiz..." maxlength="30">
+    <button class="btn-primary" onclick="setUsername()">KIRISH</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <!-- Stadium background (SVG) -->
+  <svg class="hero-stadium" viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <radialGradient id="skyGrad" cx="50%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="#0a2a5e"/>
+        <stop offset="60%" stop-color="#050f1f"/>
+        <stop offset="100%" stop-color="#020810"/>
+      </radialGradient>
+      <radialGradient id="lightGrad" cx="50%" cy="0%" r="60%">
+        <stop offset="0%" stop-color="#f5b800" stop-opacity="0.18"/>
+        <stop offset="100%" stop-color="transparent"/>
+      </radialGradient>
+      <radialGradient id="fieldGrad" cx="50%" cy="50%" r="55%">
+        <stop offset="0%" stop-color="#1a5c1a"/>
+        <stop offset="50%" stop-color="#0d3d0d"/>
+        <stop offset="100%" stop-color="#071a07"/>
+      </radialGradient>
+    </defs>
+    <!-- Sky -->
+    <rect width="800" height="420" fill="url(#skyGrad)"/>
+    <!-- Spotlight glow top -->
+    <rect width="800" height="420" fill="url(#lightGrad)"/>
+    <!-- Stars -->
+    <circle cx="80" cy="30" r="1" fill="white" opacity="0.6"/>
+    <circle cx="150" cy="60" r="0.8" fill="white" opacity="0.5"/>
+    <circle cx="220" cy="20" r="1.2" fill="white" opacity="0.7"/>
+    <circle cx="350" cy="45" r="0.9" fill="white" opacity="0.4"/>
+    <circle cx="480" cy="25" r="1" fill="white" opacity="0.6"/>
+    <circle cx="590" cy="55" r="0.8" fill="white" opacity="0.5"/>
+    <circle cx="680" cy="35" r="1.1" fill="white" opacity="0.7"/>
+    <circle cx="740" cy="70" r="0.9" fill="white" opacity="0.4"/>
+    <circle cx="120" cy="90" r="0.7" fill="white" opacity="0.3"/>
+    <circle cx="660" cy="90" r="0.7" fill="white" opacity="0.3"/>
+    <!-- Stadium bowl outer -->
+    <ellipse cx="400" cy="310" rx="420" ry="160" fill="#0d1a0d" opacity="0.95"/>
+    <!-- Stadium tiers - back -->
+    <ellipse cx="400" cy="270" rx="370" ry="120" fill="#112211" opacity="0.9"/>
+    <!-- Crowd dots back left -->
+    <rect x="40" y="170" width="310" height="90" rx="4" fill="#0a180a" opacity="0.8"/>
+    <!-- Crowd dots back right -->
+    <rect x="450" y="170" width="310" height="90" rx="4" fill="#0a180a" opacity="0.8"/>
+    <!-- Stadium lights left -->
+    <rect x="30" y="100" width="8" height="80" fill="#334" opacity="0.8"/>
+    <ellipse cx="34" cy="98" rx="18" ry="6" fill="#f5b800" opacity="0.9"/>
+    <ellipse cx="34" cy="98" rx="40" ry="20" fill="#f5b800" opacity="0.12"/>
+    <!-- Stadium lights right -->
+    <rect x="762" y="100" width="8" height="80" fill="#334" opacity="0.8"/>
+    <ellipse cx="766" cy="98" rx="18" ry="6" fill="#f5b800" opacity="0.9"/>
+    <ellipse cx="766" cy="98" rx="40" ry="20" fill="#f5b800" opacity="0.12"/>
+    <!-- Stadium lights center-left -->
+    <rect x="190" y="80" width="6" height="70" fill="#334" opacity="0.7"/>
+    <ellipse cx="193" cy="78" rx="14" ry="5" fill="#f5e87a" opacity="0.85"/>
+    <ellipse cx="193" cy="78" rx="30" ry="14" fill="#f5b800" opacity="0.1"/>
+    <!-- Stadium lights center-right -->
+    <rect x="604" y="80" width="6" height="70" fill="#334" opacity="0.7"/>
+    <ellipse cx="607" cy="78" rx="14" ry="5" fill="#f5e87a" opacity="0.85"/>
+    <ellipse cx="607" cy="78" rx="30" ry="14" fill="#f5b800" opacity="0.1"/>
+    <!-- Crowd tiers - colored seats -->
+    <rect x="42" y="175" width="308" height="20" rx="2" fill="#1a3320" opacity="0.7"/>
+    <rect x="450" y="175" width="308" height="20" rx="2" fill="#1a3320" opacity="0.7"/>
+    <rect x="55" y="200" width="290" height="18" rx="2" fill="#152b1a" opacity="0.6"/>
+    <rect x="455" y="200" width="290" height="18" rx="2" fill="#152b1a" opacity="0.6"/>
+    <rect x="70" y="222" width="270" height="16" rx="2" fill="#112214" opacity="0.6"/>
+    <rect x="460" y="222" width="270" height="16" rx="2" fill="#112214" opacity="0.6"/>
+    <!-- Crowd color flickers -->
+    <rect x="60" y="178" width="4" height="14" fill="#e63333" opacity="0.5"/>
+    <rect x="75" y="178" width="4" height="14" fill="#f5b800" opacity="0.5"/>
+    <rect x="90" y="178" width="4" height="14" fill="#3355ee" opacity="0.5"/>
+    <rect x="105" y="178" width="4" height="14" fill="#22cc55" opacity="0.5"/>
+    <rect x="550" y="178" width="4" height="14" fill="#f5b800" opacity="0.5"/>
+    <rect x="570" y="178" width="4" height="14" fill="#3355ee" opacity="0.5"/>
+    <rect x="590" y="178" width="4" height="14" fill="#e63333" opacity="0.5"/>
+    <rect x="610" y="178" width="4" height="14" fill="#22cc55" opacity="0.5"/>
+    <!-- Field -->
+    <ellipse cx="400" cy="360" rx="300" ry="80" fill="url(#fieldGrad)"/>
+    <!-- Field lines -->
+    <ellipse cx="400" cy="358" rx="290" ry="75" fill="none" stroke="#1e7a1e" stroke-width="1.5" opacity="0.6"/>
+    <line x1="400" y1="285" x2="400" y2="420" stroke="#1e7a1e" stroke-width="1" opacity="0.4"/>
+    <ellipse cx="400" cy="355" rx="55" ry="20" fill="none" stroke="#1e7a1e" stroke-width="1" opacity="0.5"/>
+    <!-- Field stripe pattern -->
+    <ellipse cx="400" cy="360" rx="260" ry="68" fill="#0f4a0f" opacity="0.3"/>
+    <ellipse cx="400" cy="360" rx="210" ry="57" fill="#1a5c1a" opacity="0.25"/>
+    <ellipse cx="400" cy="360" rx="160" ry="46" fill="#0f4a0f" opacity="0.25"/>
+    <!-- Bottom dark fade -->
+    <rect x="0" y="330" width="800" height="90" fill="url(#skyGrad)" opacity="0.7"/>
+  </svg>
+
+  <!-- Trophy floating on top -->
+  <div class="hero-trophy-wrap">
+    <svg width="80" height="95" viewBox="0 0 80 95" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ffe566"/>
+          <stop offset="40%" stop-color="#f5b800"/>
+          <stop offset="100%" stop-color="#c97700"/>
+        </linearGradient>
+        <linearGradient id="tg2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ffe566"/>
+          <stop offset="100%" stop-color="#f5b800"/>
+        </linearGradient>
+      </defs>
+      <!-- Base -->
+      <rect x="22" y="82" width="36" height="7" rx="3.5" fill="url(#tg)"/>
+      <rect x="28" y="72" width="24" height="12" rx="2" fill="url(#tg)"/>
+      <!-- Stem -->
+      <rect x="34" y="58" width="12" height="16" rx="2" fill="url(#tg)"/>
+      <!-- Cup body -->
+      <path d="M18 8 Q16 35 25 50 Q32 58 40 58 Q48 58 55 50 Q64 35 62 8 Z" fill="url(#tg2)"/>
+      <!-- Cup shine -->
+      <path d="M26 12 Q24 30 30 44" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+      <!-- Handles -->
+      <path d="M18 12 Q6 18 8 30 Q9 38 18 38" stroke="url(#tg)" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M62 12 Q74 18 72 30 Q71 38 62 38" stroke="url(#tg)" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <!-- Stars on cup -->
+      <text x="32" y="34" font-size="11" fill="white" opacity="0.5">★★</text>
+    </svg>
+  </div>
+
+  <!-- Players (emoji silhouettes) -->
+  <div class="hero-players">
+    <div class="hero-player left">🧑‍🦱</div>
+    <div style="flex:1"></div>
+    <div class="hero-player right">🧑‍🦲</div>
+  </div>
+
+  <!-- Main text -->
+  <div class="hero-content">
+    <h1>FIFA Jahon Chempionati 2026</h1>
+    <div class="hero-flags">🇺🇸 🇲🇽 🇨🇦</div>
+    <div class="hero-sub">USA · Mexico · Canada · 11 Iyun – 19 Iyul 2026</div>
+    <div class="live-badge"><span class="live-dot"></span>JONLI YANGILANISH</div>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<div class="nav-tabs">
+  <button class="tab-btn active" onclick="showPage('groups')">🏟 Guruhlar</button>
+  <button class="tab-btn" onclick="showPage('bracket')">🎯 Bracket</button>
+  <button class="tab-btn" onclick="showPage('scorers')">⚽ Gol kirituvchilar</button>
+  <button class="tab-btn" onclick="showPage('tiping')">🎮 Prognoz</button>
+  <button class="tab-btn" onclick="showPage('leaderboard')">🏅 Reyting</button>
+  <button class="tab-btn" onclick="showPage('admin')">⚙️ Admin</button>
+</div>
+
+<div class="main">
+
+  <!-- ═══ GROUPS PAGE ═══ -->
+  <div class="page active" id="page-groups">
+    <div class="section-title">🏟 GURUH BOSQICHI</div>
+    <div class="stats-row" id="summaryStats">
+      <div class="stat-mini"><div class="stat-mini-num" id="stat-played">0</div><div class="stat-mini-label">O'ynaldi</div></div>
+      <div class="stat-mini"><div class="stat-mini-num" id="stat-goals">0</div><div class="stat-mini-label">Gollar</div></div>
+      <div class="stat-mini"><div class="stat-mini-num" id="stat-teams">48</div><div class="stat-mini-label">Jamoa</div></div>
+      <div class="stat-mini"><div class="stat-mini-num" id="stat-remain">104</div><div class="stat-mini-label">Qoldi</div></div>
+    </div>
+    <div class="groups-grid" id="groupsGrid"></div>
+  </div>
+
+  <!-- ═══ BRACKET PAGE ═══ -->
+  <div class="page" id="page-bracket">
+    <div class="section-title">🎯 PLEY-OFF BRACKET</div>
+    <div class="bracket-container">
+      <div class="bracket" id="bracketView"></div>
+    </div>
+  </div>
+
+  <!-- ═══ SCORERS PAGE ═══ -->
+  <div class="page" id="page-scorers">
+    <div class="section-title">⚽ GOL KIRITUVCHILAR</div>
+    <div style="overflow-x:auto">
+      <table class="scorers-table" id="scorersTable">
+        <thead><tr>
+          <th>#</th><th>O'yinchi</th><th>Jamoa</th><th>Gollar</th><th></th>
+        </tr></thead>
+        <tbody id="scorersTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ TIPING PAGE ═══ -->
+  <div class="page" id="page-tiping">
+    <div class="section-title">🎮 PROGNOZ TIZIMI</div>
+    <div id="myTipInfo" style="margin-bottom:16px"></div>
+    <div id="tipMatchList"></div>
+  </div>
+
+  <!-- ═══ LEADERBOARD PAGE ═══ -->
+  <div class="page" id="page-leaderboard">
+    <div class="section-title">🏅 PROGNOZ REYTINGI</div>
+    <div id="tipRules" style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;color:var(--muted);">
+      <b style="color:var(--text)">Ball hisoblash:</b> Aniq natija = <span style="color:var(--gold)">3 ball</span> · To'g'ri g'olib = <span style="color:var(--blue)">1 ball</span> · Noto'g'ri = <span style="color:var(--red)">0 ball</span>
+    </div>
+    <div class="leaderboard-list" id="leaderboardList"></div>
+  </div>
+
+  <!-- ═══ ADMIN PAGE ═══ -->
+  <div class="page" id="page-admin">
+    <!-- Login form -->
+    <div class="admin-login" id="adminLogin">
+      <h2>⚙️ Admin Panel</h2>
+      <div class="form-group">
+        <label class="form-label">Parol</label>
+        <input class="form-input" id="adminPass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()">
+      </div>
+      <div id="loginError"></div>
+      <button class="btn-primary" onclick="adminLogin()">KIRISH</button>
+    </div>
+
+    <!-- Admin panel -->
+    <div class="admin-panel" id="adminPanel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div class="section-title" style="margin:0">⚙️ ADMIN PANEL</div>
+        <button class="btn-danger" onclick="adminLogout()">CHIQISH</button>
+      </div>
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" onclick="showAdminTab('matches')">O'yinlar</button>
+        <button class="admin-tab-btn" onclick="showAdminTab('scorers')">Gol kirituvchilar</button>
+        <button class="admin-tab-btn" onclick="showAdminTab('bracket')">Bracket</button>
+        <button class="admin-tab-btn" onclick="showAdminTab('settings')">Sozlamalar</button>
+      </div>
+      <div class="admin-content active" id="admin-matches">
+        <div id="adminGroupSelect" style="margin-bottom:16px">
+          <select class="form-select" id="groupSelector" onchange="renderAdminMatches()" style="max-width:200px">
+          </select>
+        </div>
+        <div id="adminMatchCards"></div>
+      </div>
+      <div class="admin-content" id="admin-scorers">
+        <h3 style="margin-bottom:16px;font-family:'Barlow Condensed';letter-spacing:1px">Gol kirituvchi qo'shish</h3>
+        <div class="scorer-add-form">
+          <input class="form-input" id="scorerName" placeholder="O'yinchi ismi">
+          <select class="form-select" id="scorerTeam"></select>
+          <input class="form-input" id="scorerGoals" type="number" min="1" value="1" style="max-width:80px">
+          <button class="btn-primary" style="width:auto;padding:10px 20px" onclick="addScorer()">QO'SHISH</button>
+        </div>
+        <div id="scorerAdminList" style="margin-top:16px"></div>
+      </div>
+      <div class="admin-content" id="admin-bracket">
+        <p style="color:var(--muted);font-size:13px;margin-bottom:16px">Pley-off o'yinlarini boshqarish</p>
+        <div id="bracketAdminCards"></div>
+      </div>
+      <div class="admin-content" id="admin-settings">
+        <div class="match-edit-card">
+          <div class="match-edit-title">Turnir holati</div>
+          <select class="form-select" id="tournamentPhase" style="max-width:250px;margin-bottom:12px">
+            <option value="groups">Guruh bosqichi</option>
+            <option value="r32">1/32 Final</option>
+            <option value="r16">1/16 Final</option>
+            <option value="qf">Chorak Final</option>
+            <option value="sf">Yarim Final</option>
+            <option value="final">FINAL</option>
+          </select>
+          <br>
+          <button class="btn-primary" style="width:auto;padding:10px 24px" onclick="savePhase()">SAQLASH</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div class="toast" id="toast"></div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getDatabase, ref, set, get, onValue, push, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+// ════════════════════════════════════════
+// 🔥 FIREBASE CONFIG — O'ZGARTIRING!
+// ════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyBAl8UG-IoWsT54E_zeYB1hmSeB8oZGmG8",
+  authDomain: "wc2026-tracker-1bf48.firebaseapp.com",
+  databaseURL: "https://wc2026-tracker-1bf48-default-rtdb.firebaseio.com",
+  projectId: "wc2026-tracker-1bf48",
+  storageBucket: "wc2026-tracker-1bf48.firebasestorage.app",
+  messagingSenderId: "218668294284",
+  appId: "1:218668294284:web:9046559343a535b7dfdba9"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+window._db = db;
+window._ref = ref;
+window._set = set;
+window._get = get;
+window._onValue = onValue;
+window._push = push;
+window._update = update;
+
+// ════════════════════════════
+// 48 JAMOA — TO'LIQ RO'YXAT
+// ════════════════════════════
+window.GROUPS = {
+  A: { name:"A", teams:[
+    {id:"usa",      name:"AQSh",       flag:"🇺🇸", short:"USA"},
+    {id:"pan",      name:"Panama",     flag:"🇵🇦", short:"PAN"},
+    {id:"bol",      name:"Boliviya",   flag:"🇧🇴", short:"BOL"},
+    {id:"nzl",      name:"Yangi Zelandiya", flag:"🇳🇿", short:"NZL"},
+  ]},
+  B: { name:"B", teams:[
+    {id:"mex",      name:"Meksika",    flag:"🇲🇽", short:"MEX"},
+    {id:"rsa",      name:"Janubiy Afrika", flag:"🇿🇦", short:"RSA"},
+    {id:"cmr",      name:"Kamerun",    flag:"🇨🇲", short:"CMR"},
+    {id:"chi",      name:"Chili",      flag:"🇨🇱", short:"CHI"},
+  ]},
+  C: { name:"C", teams:[
+    {id:"arg",      name:"Argentina",  flag:"🇦🇷", short:"ARG"},
+    {id:"ecu",      name:"Ekvador",    flag:"🇪🇨", short:"ECU"},
+    {id:"egy",      name:"Misr",       flag:"🇪🇬", short:"EGY"},
+    {id:"svn",      name:"Sloveniya",  flag:"🇸🇮", short:"SVN"},
+  ]},
+  D: { name:"D", teams:[
+    {id:"fra",      name:"Fransiya",   flag:"🇫🇷", short:"FRA"},
+    {id:"mor",      name:"Marokash",   flag:"🇲🇦", short:"MAR"},
+    {id:"sen",      name:"Senegal",    flag:"🇸🇳", short:"SEN"},
+    {id:"col",      name:"Kolumbiya",  flag:"🇨🇴", short:"COL"},
+  ]},
+  E: { name:"E", teams:[
+    {id:"esp",      name:"Ispaniya",   flag:"🇪🇸", short:"ESP"},
+    {id:"uru",      name:"Urugvay",    flag:"🇺🇾", short:"URU"},
+    {id:"gha",      name:"Gana",       flag:"🇬🇭", short:"GHA"},
+    {id:"cze",      name:"Chexiya",    flag:"🇨🇿", short:"CZE"},
+  ]},
+  F: { name:"F", teams:[
+    {id:"bra",      name:"Braziliya",  flag:"🇧🇷", short:"BRA"},
+    {id:"nor",      name:"Norvegiya",  flag:"🇳🇴", short:"NOR"},
+    {id:"civ",      name:"Kot-d'Ivuar",flag:"🇨🇮", short:"CIV"},
+    {id:"hti",      name:"Gaiti",      flag:"🇭🇹", short:"HTI"},
+  ]},
+  G: { name:"G", teams:[
+    {id:"ger",      name:"Germaniya",  flag:"🇩🇪", short:"GER"},
+    {id:"jpn",      name:"Yaponiya",   flag:"🇯🇵", short:"JPN"},
+    {id:"per",      name:"Peru",       flag:"🇵🇪", short:"PER"},
+    {id:"irq",      name:"Iroq",       flag:"🇮🇶", short:"IRQ"},
+  ]},
+  H: { name:"H", teams:[
+    {id:"por",      name:"Portugaliya",flag:"🇵🇹", short:"POR"},
+    {id:"drc",      name:"Kongo DR",   flag:"🇨🇩", short:"DRC"},
+    {id:"aut",      name:"Avstriya",   flag:"🇦🇹", short:"AUT"},
+    {id:"tun",      name:"Tunis",      flag:"🇹🇳", short:"TUN"},
+  ]},
+  I: { name:"I", teams:[
+    {id:"ned",      name:"Niderlandiya",flag:"🇳🇱", short:"NED"},
+    {id:"kor",      name:"Janubiy Koreya", flag:"🇰🇷", short:"KOR"},
+    {id:"uzb",      name:"O'zbekiston",flag:"🇺🇿", short:"UZB"},
+    {id:"sco",      name:"Shotlandiya",flag:"🏴󠁧󠁢󠁳󠁣󠁴󠁿", short:"SCO"},
+  ]},
+  J: { name:"J", teams:[
+    {id:"bel",      name:"Belgiya",    flag:"🇧🇪", short:"BEL"},
+    {id:"kan",      name:"Kanada",     flag:"🇨🇦", short:"CAN"},
+    {id:"alg",      name:"Jazoir",     flag:"🇩🇿", short:"ALG"},
+    {id:"par",      name:"Paragvay",   flag:"🇵🇾", short:"PAR"},
+  ]},
+  K: { name:"K", teams:[
+    {id:"cro",      name:"Xorvatiya",  flag:"🇭🇷", short:"CRO"},
+    {id:"aus",      name:"Avstraliya", flag:"🇦🇺", short:"AUS"},
+    {id:"caf",      name:"CAF Playoff", flag:"🌍", short:"CAF"},
+    {id:"bih",      name:"Bosniya",    flag:"🇧🇦", short:"BIH"},
+  ]},
+  L: { name:"L", teams:[
+    {id:"eng",      name:"Angliya",    flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", short:"ENG"},
+    {id:"swi",      name:"Shveytsariya",flag:"🇨🇭", short:"SUI"},
+    {id:"tur",      name:"Turkiya",    flag:"🇹🇷", short:"TUR"},
+    {id:"swe",      name:"Shvetsiya",  flag:"🇸🇪", short:"SWE"},
+  ]},
+};
+
+// Guruh o'yinlari generatsiyasi (round-robin)
+function genGroupMatches(groupKey) {
+  const teams = GROUPS[groupKey].teams;
+  const matches = [];
+  let id = 0;
+  for(let i=0;i<teams.length;i++){
+    for(let j=i+1;j<teams.length;j++){
+      matches.push({ id:`${groupKey}_${id++}`, home: teams[i].id, away: teams[j].id, scoreHome: null, scoreAway: null });
+    }
+  }
+  return matches;
+}
+
+// Pley-off bracket boshlang'ich holati
+window.BRACKET_ROUNDS = [
+  { id:'r32', label:'1/32 Final', slots: Array.from({length:16},(_,i)=>({id:`r32_${i}`,teamA:null,teamB:null,scoreA:null,scoreB:null})) },
+  { id:'r16', label:'1/16 Final', slots: Array.from({length:8},(_,i)=>({id:`r16_${i}`,teamA:null,teamB:null,scoreA:null,scoreB:null})) },
+  { id:'qf',  label:'Chorak Final', slots: Array.from({length:4},(_,i)=>({id:`qf_${i}`,teamA:null,teamB:null,scoreA:null,scoreB:null})) },
+  { id:'sf',  label:'Yarim Final', slots: Array.from({length:2},(_,i)=>({id:`sf_${i}`,teamA:null,teamB:null,scoreA:null,scoreB:null})) },
+  { id:'f',   label:'🏆 FINAL', slots: [{id:'f_0',teamA:null,teamB:null,scoreA:null,scoreB:null}] },
+];
+
+// ════ STATE ════
+let matchData = {};
+let scorersData = [];
+let bracketData = {};
+let tipsData = {};
+let leaderData = {};
+let currentUser = localStorage.getItem('wc2026_user') || null;
+const ADMIN_PASS = "wc2026admin";
+
+// ════ INIT ════
+window.addEventListener('DOMContentLoaded', ()=>{
+  if(currentUser) document.getElementById('usernameModal').style.display='none';
+  initFirebase();
+  populateAdminSelects();
+});
+
+function initFirebase(){
+  // Groups
+  _onValue(_ref(db,'matches'), snap=>{
+    matchData = snap.val() || {};
+    if(Object.keys(matchData).length===0) seedMatches();
+    else renderGroups();
+  });
+  // Scorers
+  _onValue(_ref(db,'scorers'), snap=>{ scorersData = snap.val() ? Object.values(snap.val()) : []; renderScorers(); });
+  // Bracket
+  _onValue(_ref(db,'bracket'), snap=>{ bracketData = snap.val() || {}; renderBracket(); });
+  // Tips
+  _onValue(_ref(db,'tips'), snap=>{ tipsData = snap.val() || {}; renderTiping(); calcLeaderboard(); });
+}
+
+async function seedMatches(){
+  const all = {};
+  Object.keys(GROUPS).forEach(g=>{
+    genGroupMatches(g).forEach(m=>{ all[m.id] = m; });
+  });
+  await _set(_ref(db,'matches'), all);
+}
+
+// ════════════════════════════
+// 🏟 RENDER GROUPS
+// ════════════════════════════
+function calcStandings(groupKey){
+  const teams = GROUPS[groupKey].teams;
+  const st = {};
+  teams.forEach(t=>{ st[t.id]={id:t.id,name:t.name,flag:t.flag,short:t.short,p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0}; });
+  Object.values(matchData).forEach(m=>{
+    if(!m.id.startsWith(groupKey+'_')) return;
+    const sH = (m.scoreHome===null||m.scoreHome===undefined) ? null : Number(m.scoreHome);
+    const sA = (m.scoreAway===null||m.scoreAway===undefined) ? null : Number(m.scoreAway);
+    if(sH===null||sA===null||isNaN(sH)||isNaN(sA)) return;
+    const h=sH, a=sA;
+    if(!st[m.home]||!st[m.away]) return;
+    st[m.home].p++; st[m.away].p++;
+    st[m.home].gf+=h; st[m.home].ga+=a;
+    st[m.away].gf+=a; st[m.away].ga+=h;
+    if(h>a){ st[m.home].w++; st[m.home].pts+=3; st[m.away].l++; }
+    else if(h<a){ st[m.away].w++; st[m.away].pts+=3; st[m.home].l++; }
+    else { st[m.home].d++; st[m.home].pts+=1; st[m.away].d++; st[m.away].pts+=1; }
+  });
+  return Object.values(st).sort((a,b)=>b.pts-a.pts||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf);
+}
+
+function renderGroups(){
+  const grid = document.getElementById('groupsGrid');
+  grid.innerHTML = '';
+  let totalPlayed=0, totalGoals=0;
+  Object.keys(GROUPS).forEach(g=>{
+    const st = calcStandings(g);
+    const grpMatches = Object.values(matchData).filter(m=>m.id.startsWith(g+'_'));
+    const played = grpMatches.filter(m=>m.scoreHome!==null).length;
+    totalPlayed+=played;
+    grpMatches.forEach(m=>{ const sh=Number(m.scoreHome),sa=Number(m.scoreAway); if(m.scoreHome!==null&&m.scoreAway!==null&&!isNaN(sh)&&!isNaN(sa)){ totalGoals+=sh+sa; } });
+
+    const card = document.createElement('div');
+    card.className='group-card';
+    card.innerHTML=`
+      <div class="group-header">
+        <div class="group-name">GURUH ${g}</div>
+        <div style="font-size:11px;color:var(--muted)">${played}/${grpMatches.length} o'yin</div>
+      </div>
+      <table class="group-table">
+        <thead><tr><th>Jamoa</th><th>O</th><th>G</th><th>D</th><th>M</th><th>GF</th><th>GA</th><th>Pts</th></tr></thead>
+        <tbody>
+        ${st.map((t,i)=>`
+          <tr class="${i===0?'qualify-1':i===1?'qualify-2':i===2?'qualify-3':''}">
+            <td><div class="team-cell"><span class="team-flag">${t.flag}</span><span class="team-name-short">${t.short}</span></div></td>
+            <td>${t.p}</td><td>${t.w}</td><td>${t.d}</td><td>${t.l}</td>
+            <td>${t.gf}</td><td>${t.ga}</td>
+            <td class="pts">${t.pts}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      <div class="matches-section">
+        <div class="matches-title">O'yinlar</div>
+        ${grpMatches.map(m=>{
+          const hTeam=GROUPS[g].teams.find(t=>t.id===m.home);
+          const aTeam=GROUPS[g].teams.find(t=>t.id===m.away);
+          const sHome=(m.scoreHome===null||m.scoreHome===undefined)?null:Number(m.scoreHome); const sAway=(m.scoreAway===null||m.scoreAway===undefined)?null:Number(m.scoreAway); const played = sHome!==null&&sAway!==null&&!isNaN(sHome)&&!isNaN(sAway);
+          return `<div class="match-row">
+            <div class="match-team">${hTeam.flag} ${hTeam.short}</div>
+            <div class="match-score ${played?'played':'upcoming'}">${played?sHome+' : '+sAway:'vs'}</div>
+            <div class="match-team right">${aTeam.short} ${aTeam.flag}</div>
+          </div>`;
+        }).join('')}
+      </div>`;
+    grid.appendChild(card);
+  });
+  document.getElementById('stat-played').textContent = totalPlayed;
+  document.getElementById('stat-goals').textContent = totalGoals;
+  document.getElementById('stat-remain').textContent = 104-totalPlayed;
+}
+
+// ════════════════════════════
+// 🎯 RENDER BRACKET
+// ════════════════════════════
+function renderBracket(){
+  const bv = document.getElementById('bracketView');
+  bv.innerHTML='';
+  BRACKET_ROUNDS.forEach(round=>{
+    const col=document.createElement('div');
+    col.className='round-col';
+    col.innerHTML=`<div class="round-header">${round.label}</div>`;
+    round.slots.forEach(slot=>{
+      const saved = bracketData[slot.id] || slot;
+      const scoreDisplay = (saved.scoreA!==null&&saved.scoreB!==null) ? `${saved.scoreA} - ${saved.scoreB}` : 'vs';
+      const aWin = saved.scoreA!==null && saved.scoreA > saved.scoreB;
+      const bWin = saved.scoreB!==null && saved.scoreB > saved.scoreA;
+      col.innerHTML+=`<div class="bracket-slot">
+        <div class="bracket-team ${aWin?'winner':''}">
+          <div class="bteam-left">${saved.teamA||'<span style="color:var(--muted)">TBD</span>'}</div>
+          <div class="bscore">${saved.scoreA!==null?saved.scoreA:'-'}</div>
+        </div>
+        <div class="bracket-team ${bWin?'winner':''}">
+          <div class="bteam-left">${saved.teamB||'<span style="color:var(--muted)">TBD</span>'}</div>
+          <div class="bscore">${saved.scoreB!==null?saved.scoreB:'-'}</div>
+        </div>
+        <div class="bracket-date">${scoreDisplay}</div>
+      </div>`;
+    });
+    bv.appendChild(col);
+  });
+}
+
+// ════════════════════════════
+// ⚽ RENDER SCORERS
+// ════════════════════════════
+function renderScorers(){
+  const sorted = [...scorersData].sort((a,b)=>b.goals-a.goals);
+  const tbody = document.getElementById('scorersTbody');
+  const maxG = sorted[0]?.goals||1;
+  tbody.innerHTML = sorted.map((s,i)=>`
+    <tr>
+      <td><span class="rank-badge rank-${i<3?i+1:'other'}">${i+1}</span></td>
+      <td style="font-weight:600">${s.name}</td>
+      <td><span class="tag">${getTeamFlag(s.team)} ${s.team}</span></td>
+      <td>
+        <div class="goals-bar-wrap">
+          <div class="goals-bar" style="width:${Math.round(s.goals/maxG*120)}px"></div>
+          <div class="goals-num">${s.goals}</div>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+// ════════════════════════════
+// 🎮 TIPING
+// ════════════════════════════
+function renderTiping(){
+  if(!currentUser){ return; }
+  const userTips = tipsData[currentUser] || {};
+  let totalPts = 0;
+  Object.values(userTips).forEach(t=>{ if(t.pts) totalPts+=t.pts; });
+  document.getElementById('myTipInfo').innerHTML=`
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px">
+      <div style="font-size:28px">👋</div>
+      <div>
+        <div style="font-weight:700">${currentUser}</div>
+        <div style="color:var(--muted);font-size:13px">Prognozlar: ${Object.keys(userTips).length} ta · Ballar: <span style="color:var(--gold);font-weight:700">${totalPts}</span></div>
+      </div>
+    </div>`;
+
+  const list = document.getElementById('tipMatchList');
+  list.innerHTML='';
+  const allMatches = Object.values(matchData);
+  if(!allMatches.length){ list.innerHTML='<p style="color:var(--muted)">O\'yinlar yuklanmoqda...</p>'; return; }
+
+  allMatches.forEach(m=>{
+    const gKey = m.id.split('_')[0];
+    const grp = GROUPS[gKey];
+    if(!grp) return;
+    const hTeam = grp.teams.find(t=>t.id===m.home);
+    const aTeam = grp.teams.find(t=>t.id===m.away);
+    if(!hTeam||!aTeam) return;
+    const tip = userTips[m.id] || {};
+    const isPlayed = m.scoreHome!==null;
+    const div=document.createElement('div');
+    div.className='tip-match-card';
+    div.innerHTML=`
+      <div class="tip-match-header">
+        <span style="font-family:'Barlow Condensed';font-size:13px;color:var(--muted)">GURUH ${gKey}</span>
+        ${isPlayed?`<span class="tag" style="${tip.pts!==undefined?'color:var(--gold)':''}">
+          ${tip.pts!==undefined?'✅ '+tip.pts+' ball':'O\'ynaldi'}
+        </span>`:''}
+      </div>
+      <div class="tip-teams">
+        <div class="tip-team-name">${hTeam.flag} ${hTeam.short}</div>
+        <div class="tip-vs">vs</div>
+        <div class="tip-team-name">${aTeam.short} ${aTeam.flag}</div>
+      </div>
+      ${isPlayed
+        ?`<div style="text-align:center;font-family:'Bebas Neue';font-size:22px;color:var(--gold)">${m.scoreHome} : ${m.scoreAway}</div>
+           ${tip.h!==undefined?`<div style="text-align:center;font-size:12px;color:var(--muted);margin-top:4px">Sizning prognozingiz: ${tip.h} : ${tip.a}</div>`:'<div style="text-align:center;font-size:12px;color:var(--muted);margin-top:4px">Prognoz berilmagan</div>'}`
+        :`<div class="tip-inputs">
+          <input class="tip-score-input" id="th_${m.id}" type="number" min="0" max="20" value="${tip.h!==undefined?tip.h:''}" placeholder="0">
+          <span class="tip-sep">:</span>
+          <input class="tip-score-input" id="ta_${m.id}" type="number" min="0" max="20" value="${tip.a!==undefined?tip.a:''}" placeholder="0">
+        </div>
+        <button class="tip-save-btn" onclick="saveTip('${m.id}')">PROGNOZNI SAQLASH</button>`}
+    `;
+    list.appendChild(div);
+  });
+}
+
+window.saveTip = async function(matchId){
+  if(!currentUser) return;
+  const h = parseInt(document.getElementById('th_'+matchId)?.value);
+  const a = parseInt(document.getElementById('ta_'+matchId)?.value);
+  if(isNaN(h)||isNaN(a)){ showToast('⚠️ Ikkala natijani kiriting!'); return; }
+  await _set(_ref(db,`tips/${currentUser}/${matchId}`), {h,a});
+  showToast('✅ Prognoz saqlandi!');
+};
+
+// ════════════════════════════
+// 🏅 LEADERBOARD
+// ════════════════════════════
+function calcLeaderboard(){
+  const lb = {};
+  Object.entries(tipsData).forEach(([user, userTips])=>{
+    let pts=0, correct=0;
+    Object.entries(userTips).forEach(([mid, tip])=>{
+      const m = matchData[mid];
+      if(!m||m.scoreHome===null) return;
+      if(tip.h===m.scoreHome && tip.a===m.scoreAway){ pts+=3; correct++; _update(_ref(db,`tips/${user}/${mid}`),{pts:3}); }
+      else {
+        const tWin = tip.h>tip.a?'h':tip.h<tip.a?'a':'d';
+        const mWin = m.scoreHome>m.scoreAway?'h':m.scoreHome<m.scoreAway?'a':'d';
+        if(tWin===mWin){ pts+=1; _update(_ref(db,`tips/${user}/${mid}`),{pts:1}); }
+        else { _update(_ref(db,`tips/${user}/${mid}`),{pts:0}); }
+      }
+    });
+    lb[user]={name:user, pts, correct, total: Object.keys(userTips).length};
+  });
+  leaderData = lb;
+  renderLeaderboard();
+}
+
+function renderLeaderboard(){
+  const sorted = Object.values(leaderData).sort((a,b)=>b.pts-a.pts);
+  const el = document.getElementById('leaderboardList');
+  if(!sorted.length){ el.innerHTML='<p style="color:var(--muted);text-align:center;padding:40px">Hali prognoz berilmagan</p>'; return; }
+  el.innerHTML = sorted.map((u,i)=>`
+    <div class="lb-row ${i===0?'lb-top1':i===1?'lb-top2':i===2?'lb-top3':''}">
+      <div class="lb-rank">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+      <div>
+        <div class="lb-name">${u.name}</div>
+        <div style="font-size:11px;color:var(--muted)">${u.total} prognoz · ${u.correct} aniq</div>
+      </div>
+      <div><div class="lb-pts">${u.pts}</div><div class="lb-pts-label">BALL</div></div>
+    </div>`).join('');
+}
+
+// ════════════════════════════
+// ⚙️ ADMIN
+// ════════════════════════════
+window.adminLogin = function(){
+  const pass = document.getElementById('adminPass').value;
+  if(pass===ADMIN_PASS){
+    document.getElementById('adminLogin').style.display='none';
+    document.getElementById('adminPanel').classList.add('visible');
+    renderAdminMatches();
+    renderAdminScorers();
+    renderAdminBracket();
+  } else {
+    document.getElementById('loginError').innerHTML='<div class="alert alert-error">❌ Parol noto\'g\'ri</div>';
+  }
+};
+window.adminLogout = function(){
+  document.getElementById('adminLogin').style.display='';
+  document.getElementById('adminPanel').classList.remove('visible');
+  document.getElementById('adminPass').value='';
+};
+
+window.showAdminTab = function(tab){
+  document.querySelectorAll('.admin-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.admin-tab-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('admin-'+tab).classList.add('active');
+  event.target.classList.add('active');
+};
+
+function populateAdminSelects(){
+  const gs = document.getElementById('groupSelector');
+  if(gs) Object.keys(GROUPS).forEach(g=>{ gs.innerHTML+=`<option value="${g}">Guruh ${g}</option>`; });
+  const st = document.getElementById('scorerTeam');
+  if(st) Object.keys(GROUPS).forEach(g=>{ GROUPS[g].teams.forEach(t=>{ st.innerHTML+=`<option value="${t.short}">${t.flag} ${t.short}</option>`; }); });
+}
+
+window.renderAdminMatches = function(){
+  const g = document.getElementById('groupSelector')?.value;
+  if(!g) return;
+  const grpMatches = Object.values(matchData).filter(m=>m.id.startsWith(g+'_'));
+  const el = document.getElementById('adminMatchCards');
+  el.innerHTML='';
+  grpMatches.forEach(m=>{
+    const hTeam = GROUPS[g].teams.find(t=>t.id===m.home);
+    const aTeam = GROUPS[g].teams.find(t=>t.id===m.away);
+    el.innerHTML+=`<div class="match-edit-card">
+      <div class="match-edit-title">${hTeam.flag} ${hTeam.name} vs ${aTeam.name} ${aTeam.flag}</div>
+      <div class="score-inputs">
+        <input class="score-input" id="sh_${m.id}" type="number" min="0" max="20" value="${m.scoreHome!==null?m.scoreHome:''}">
+        <span class="score-sep">:</span>
+        <input class="score-input" id="sa_${m.id}" type="number" min="0" max="20" value="${m.scoreAway!==null?m.scoreAway:''}">
+        <button class="save-match-btn" onclick="saveMatch('${m.id}','${g}')">SAQLASH</button>
+        ${m.scoreHome!==null?`<button class="btn-danger" onclick="clearMatch('${m.id}')">O'chirish</button>`:''}
+      </div>
+    </div>`;
+  });
+};
+
+window.saveMatch = async function(matchId, gKey){
+  const h = parseInt(document.getElementById('sh_'+matchId)?.value);
+  const a = parseInt(document.getElementById('sa_'+matchId)?.value);
+  if(isNaN(h)||isNaN(a)){ showToast('⚠️ Ikkala sonni kiriting'); return; }
+  await _update(_ref(db,`matches/${matchId}`), {scoreHome:h, scoreAway:a});
+  showToast('✅ Natija saqlandi!');
+  // Recalc tips pts
+  setTimeout(()=>calcLeaderboard(),500);
+};
+window.clearMatch = async function(matchId){
+  await _update(_ref(db,`matches/${matchId}`), {scoreHome:null, scoreAway:null});
+  showToast('🗑 Natija o\'chirildi');
+};
+
+window.addScorer = async function(){
+  const name = document.getElementById('scorerName').value.trim();
+  const team = document.getElementById('scorerTeam').value;
+  const goals = parseInt(document.getElementById('scorerGoals').value);
+  if(!name||isNaN(goals)){ showToast('⚠️ Ma\'lumot to\'liq emas'); return; }
+  const existing = scorersData.find(s=>s.name===name&&s.team===team);
+  if(existing){ await _set(_ref(db,`scorers/${name.replace(/\s/g,'_')}_${team}`), {...existing, goals:existing.goals+goals}); }
+  else { await _set(_ref(db,`scorers/${name.replace(/\s/g,'_')}_${team}`), {name,team,goals}); }
+  document.getElementById('scorerName').value='';
+  document.getElementById('scorerGoals').value='1';
+  showToast('✅ Gol qo\'shildi!');
+};
+
+function renderAdminScorers(){
+  const el = document.getElementById('scorerAdminList');
+  if(!el) return;
+  const sorted = [...scorersData].sort((a,b)=>b.goals-a.goals).slice(0,10);
+  el.innerHTML = `<div style="display:flex;flex-direction:column;gap:6px">${sorted.map(s=>`
+    <div style="display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 12px">
+      <span style="flex:1;font-weight:600">${s.name}</span>
+      <span class="tag">${s.team}</span>
+      <span style="font-family:'Bebas Neue';font-size:18px;color:var(--gold)">${s.goals}</span>
+      <button class="btn-danger" onclick="deleteScorer('${s.name}','${s.team}')">❌</button>
+    </div>`).join('')}</div>`;
+}
+
+window.deleteScorer = async function(name, team){
+  const key = name.replace(/\s/g,'_')+'_'+team;
+  await _set(_ref(db,`scorers/${key}`), null);
+  showToast('🗑 O\'chirildi');
+};
+
+function renderAdminBracket(){
+  const el = document.getElementById('bracketAdminCards');
+  if(!el) return;
+  el.innerHTML='';
+  BRACKET_ROUNDS.forEach(round=>{
+    el.innerHTML+=`<h3 style="font-family:'Barlow Condensed';letter-spacing:1px;margin:16px 0 8px;color:var(--gold)">${round.label}</h3>`;
+    round.slots.forEach(slot=>{
+      const saved = bracketData[slot.id]||slot;
+      el.innerHTML+=`<div class="match-edit-card">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+          <input class="form-input" style="flex:1;min-width:120px" id="ba_${slot.id}" placeholder="Jamoa A" value="${saved.teamA||''}">
+          <input class="score-input" id="bsa_${slot.id}" type="number" min="0" value="${saved.scoreA!==null?saved.scoreA:''}">
+          <span class="score-sep">:</span>
+          <input class="score-input" id="bsb_${slot.id}" type="number" min="0" value="${saved.scoreB!==null?saved.scoreB:''}">
+          <input class="form-input" style="flex:1;min-width:120px" id="bb_${slot.id}" placeholder="Jamoa B" value="${saved.teamB||''}">
+          <button class="save-match-btn" onclick="saveBracketSlot('${slot.id}')">SAQLASH</button>
+        </div>
+      </div>`;
+    });
+  });
+}
+
+window.saveBracketSlot = async function(slotId){
+  const teamA = document.getElementById('ba_'+slotId)?.value.trim();
+  const teamB = document.getElementById('bb_'+slotId)?.value.trim();
+  const scoreA = parseInt(document.getElementById('bsa_'+slotId)?.value);
+  const scoreB = parseInt(document.getElementById('bsb_'+slotId)?.value);
+  await _set(_ref(db,`bracket/${slotId}`), {
+    teamA: teamA||null, teamB: teamB||null,
+    scoreA: isNaN(scoreA)?null:scoreA,
+    scoreB: isNaN(scoreB)?null:scoreB,
+  });
+  showToast('✅ Bracket saqlandi!');
+};
+
+window.savePhase = async function(){
+  const phase = document.getElementById('tournamentPhase').value;
+  await _set(_ref(db,'phase'), phase);
+  showToast('✅ Holat saqlandi: '+phase);
+};
+
+// ════════════════════════════
+// 🛠 UTILS
+// ════════════════════════════
+window.showPage = function(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  event.target.classList.add('active');
+  if(page==='scorers') renderAdminScorers();
+};
+
+window.setUsername = function(){
+  const name = document.getElementById('usernameInput').value.trim();
+  if(!name||name.length<2){ showToast('⚠️ Ism kamida 2 ta harf!'); return; }
+  currentUser = name;
+  localStorage.setItem('wc2026_user', name);
+  document.getElementById('usernameModal').style.display='none';
+  renderTiping();
+  showToast('👋 Xush kelibsiz, '+name+'!');
+};
+
+function getTeamFlag(shortName){
+  for(const g of Object.values(GROUPS)){
+    const t = g.teams.find(t=>t.short===shortName);
+    if(t) return t.flag;
+  }
+  return '🏳';
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>
